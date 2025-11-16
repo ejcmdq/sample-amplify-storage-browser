@@ -1,33 +1,47 @@
-import {
-  createAmplifyAuthAdapter,
-  createStorageBrowser,
-} from '@aws-amplify/ui-react-storage/browser';
+import * as React from 'react';
+import { StorageBrowser } from './StorageBrowser';
+
+import '@aws-amplify/ui-react/styles.css';
 import '@aws-amplify/ui-react-storage/styles.css';
-import './App.css';
+import './portalunico.css';
 
-import config from '../amplify_outputs.json';
-import { Amplify } from 'aws-amplify';
-import { Authenticator, Button } from '@aws-amplify/ui-react';
-Amplify.configure(config);
-
-const { StorageBrowser } = createStorageBrowser({
-  config: createAmplifyAuthAdapter(),
-});
-
-function App() {
+export default function App() {
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <>
-          <div className="header">
-            <h1>{`Hello ${user?.username}`}</h1>
-            <Button onClick={signOut}>Sign out</Button>
-          </div>
-          <StorageBrowser />
-        </>
-      )}
-    </Authenticator>
+    <div className="pu-wrapper">
+      <header className="pu-header">
+        <h1>Acervo Histórico CIF / Renova</h1>
+        <p>
+          Consulte atas, decisões, notas técnicas e demais documentos históricos
+          relacionados à reparação do Rio Doce.
+        </p>
+      </header>
+
+      <StorageBrowser
+        displayText={{
+          LocationsView: {
+            title: 'Locais de armazenamento',
+            searchPlaceholder: 'Filtrar pastas',
+            getListFoldersResultsMessage: ({ totalFolders }) =>
+              totalFolders === 0
+                ? 'Nenhuma pasta encontrada'
+                : `${totalFolders} pasta(s) encontrada(s)`,
+          },
+          LocationDetailView: {
+            title: 'Documentos',
+            searchPlaceholder: 'Buscar arquivos e pastas',
+            searchSubmitLabel: 'Pesquisar',
+            searchClearLabel: 'Limpar',
+            searchSubfoldersToggleLabel: 'Incluir subpastas',
+            tableColumnFolderHeader: 'Pasta',
+            tableColumnNameHeader: 'Nome',
+            tableColumnTypeHeader: 'Tipo',
+            tableColumnSizeHeader: 'Tamanho',
+            loadingIndicatorLabel: 'Carregando...',
+            noItemsLabel: 'Nenhum arquivo ou pasta encontrado.',
+          },
+        }}
+      />
+    </div>
   );
 }
 
-export default App;
