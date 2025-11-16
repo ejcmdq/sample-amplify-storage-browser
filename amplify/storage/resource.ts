@@ -23,8 +23,8 @@ export const storage = defineStorage({
   }),
 });
 
-// Bucket secundário usado para caminhos de backup_* (mantido para compatibilidade
-// com amplify/backend.ts, que importa `secondaryStorage` deste módulo)
+// Bucket secundário usado para caminhos de backup_*
+// (amplify/backend.ts importa `secondaryStorage` deste módulo)
 export const secondaryStorage = defineStorage({
   name: 'mySecondaryStorageBucket',
   access: (allow) => ({
