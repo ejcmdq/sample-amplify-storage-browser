@@ -39,12 +39,12 @@
 
 /* 1) Esconder coluna "Bucket" (2ª coluna) em todas as tabelas do Storage Browser */
 
-.amplify-storage-browser__data-table thead tr th:nth-child(2),
-.amplify-storage-browser__data-table tbody tr td:nth-child(2),
-.amplify-storage-browser__data-table table thead tr th:nth-child(2),
-.amplify-storage-browser__data-table table tbody tr td:nth-child(2) {
-  display: none !important;
-}
+/*.amplify-storage-browser__data-table thead tr th:nth-child(2),
+/*.amplify-storage-browser__data-table tbody tr td:nth-child(2),
+/*.amplify-storage-browser__data-table table thead tr th:nth-child(2),
+/*.amplify-storage-browser__data-table table tbody tr td:nth-child(2) {
+/*  display: none !important;
+/*}
 
 /* 2) Esconder qualquer breadcrumb / nav dentro do wrapper */
 
