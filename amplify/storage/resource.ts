@@ -4,33 +4,37 @@ export const storage = defineStorage({
   name: 'myStorageBucket',
   isDefault: true,
   access: (allow) => ({
-    // Public area: everyone (guest or authenticated) can READ only
+    // Área pública: leitura para convidados e usuários autenticados
     'public/*': [
       allow.guest.to(['read']),
       allow.authenticated.to(['read']),
     ],
 
-    // Admin area: only "admin" group can change; others can only read
+    // Área admin: apenas grupo "admin" pode escrever/apagar; demais só leem
     'admin/*': [
       allow.groups(['admin']).to(['read', 'write', 'delete']),
       allow.authenticated.to(['read']),
     ],
 
-    // Private per-identity data (not used for our public archive, but kept)
+    // Área privada por identidade (mantida para compatibilidade)
     'private/{entity_id}/*': [
       allow.entity('identity').to(['read', 'write', 'delete']),
     ],
+  }),
+});
 
-    // Backup area in the secondary bucket – only admins use this
+// Bucket secundário usado para caminhos de backup_* (mantido para compatibilidade
+// com amplify/backend.ts, que importa `secondaryStorage` deste módulo)
+export const secondaryStorage = defineStorage({
+  name: 'mySecondaryStorageBucket',
+  access: (allow) => ({
     'backup_public/*': [
       allow.groups(['admin']).to(['read', 'write', 'delete']),
     ],
-
     'backup_admin/*': [
       allow.groups(['admin']).to(['read', 'write', 'delete']),
       allow.authenticated.to(['read']),
     ],
-
     'backup_private/{entity_id}/*': [
       allow.entity('identity').to(['read', 'write', 'delete']),
     ],
