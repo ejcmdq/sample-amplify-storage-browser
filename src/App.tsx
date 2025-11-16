@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { StorageBrowser } from './StorageBrowser';
 
 import '@aws-amplify/ui-react/styles.css';
@@ -5,7 +6,7 @@ import '@aws-amplify/ui-react-storage/styles.css';
 import './portalunico.css';
 
 export default function App() {
-  // Texto da UI em PT-BR. Usamos "any" para evitar conflitos de tipagem
+  // Texto da UI em PT-BR
   const displayText: any = {
     LocationsView: {
       title: 'Locais de armazenamento',
@@ -29,6 +30,25 @@ export default function App() {
       noItemsLabel: 'Nenhum arquivo ou pasta encontrado.',
     },
   };
+
+  // Auto-navega para o único "location" (public/historical-data/)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Tabela da primeira tela ("Locais de armazenamento")
+      const table = document.querySelector(
+        '.amplify-storage-browser__data-table'
+      );
+      if (!table) return;
+
+      // Primeiro link na tabela (public/historical-data/)
+      const firstLink = table.querySelector('tbody tr:first-child a');
+      if (firstLink instanceof HTMLAnchorElement) {
+        firstLink.click();
+      }
+    }, 400); // pequeno delay para garantir que o DOM da tabela já foi renderizado
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="pu-wrapper">
