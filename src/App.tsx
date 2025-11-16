@@ -5,6 +5,35 @@ import '@aws-amplify/ui-react/styles.css';
 import '@aws-amplify/ui-react-storage/styles.css';
 import './portalunico.css';
 
+const PUBLIC_SEGMENT = 'historical-data';
+
+function clickPublicRoot(): boolean {
+  const breadcrumbContainer = document.querySelector(
+    '.amplify-storage-browser__breadcrumbs'
+  );
+  if (!breadcrumbContainer) return false;
+
+  const links = Array.from(
+    breadcrumbContainer.querySelectorAll('a')
+  ) as HTMLAnchorElement[];
+
+  // 1) tenta achar um link cujo texto contenha "historical-data"
+  let target = links.find((link) =>
+    link.textContent?.trim().includes(PUBLIC_SEGMENT)
+  );
+
+  // 2) fallback: se houver muitos segmentos, pega o 4º (Home, bucket, public, historical-data)
+  if (!target && links.length >= 4) {
+    target = links[3];
+  }
+
+  if (target) {
+    target.click();
+    return true;
+  }
+  return false;
+}
+
 export default function App() {
   // Texto da UI em PT-BR
   const displayText: any = {
@@ -31,21 +60,50 @@ export default function App() {
     },
   };
 
-  // Auto-navega para o único "location" (public/historical-data/)
+  // Início → vai para a pasta public/historical-data/ sem recarregar
+  const handleHome = () => {
+    const ok = clickPublicRoot();
+    if (!ok) {
+      // fallback extremo: recarrega a página e o useEffect abrirá o primeiro location
+      window.location.href = window.location.origin + window.location.pathname;
+    }
+  };
+
+  // Voltar um nível usando o breadcrumb escondido
+  const handleBack = () => {
+    const breadcrumbContainer = document.querySelector(
+      '.amplify-storage-browser__breadcrumbs'
+    );
+    if (!breadcrumbContainer) {
+      handleHome();
+      return;
+    }
+
+    const links = Array.from(
+      breadcrumbContainer.querySelectorAll('a')
+    ) as HTMLAnchorElement[];
+
+    if (links.length >= 2) {
+      const parentLink = links[links.length - 2];
+      parentLink.click();
+      return;
+    }
+
+    handleHome();
+  };
+
+  // Auto-navega para o único "location" (public/historical-data/) na primeira renderização
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Tabela da primeira tela ("Locais de armazenamento")
       const table = document.querySelector(
         '.amplify-storage-browser__data-table'
       );
       if (!table) return;
-
-      // Primeiro link na tabela (public/historical-data/)
       const firstLink = table.querySelector('tbody tr:first-child a');
       if (firstLink instanceof HTMLAnchorElement) {
         firstLink.click();
       }
-    }, 400); // pequeno delay para garantir que o DOM da tabela já foi renderizado
+    }, 400);
 
     return () => clearTimeout(timer);
   }, []);
@@ -58,6 +116,19 @@ export default function App() {
           Consulte atas, decisões, notas técnicas e demais documentos históricos
           relacionados à reparação do Rio Doce.
         </p>
+
+        <div className="pu-actions">
+          <button type="button" className="pu-button" onClick={handleHome}>
+            Início
+          </button>
+          <button
+            type="button"
+            className="pu-button pu-button-secondary"
+            onClick={handleBack}
+          >
+            Voltar
+          </button>
+        </div>
       </header>
 
       <StorageBrowser displayText={displayText} />
