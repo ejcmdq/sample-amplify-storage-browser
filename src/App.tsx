@@ -33,7 +33,7 @@ export default function App() {
   return (
     <div className="pu-wrapper">
       <header className="pu-header">
-        <h1>Acervo Histórico CIF / Renova</h1>
+        <h1>Acervo Histórico IBAMA / CIF</h1>
         <p>
           Consulte atas, decisões, notas técnicas e demais documentos históricos
           relacionados à reparação do Rio Doce.

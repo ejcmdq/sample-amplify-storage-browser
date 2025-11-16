@@ -1,3 +1,4 @@
+/* Wrapper geral do conteúdo */
 .pu-wrapper {
   max-width: 1400px;
   margin: 0 auto;
@@ -6,7 +7,7 @@
     sans-serif;
 }
 
-/* Header */
+/* Cabeçalho */
 .pu-header {
   margin-bottom: 1rem;
   border-bottom: 1px solid #dde3ea;
@@ -16,7 +17,7 @@
 .pu-header h1 {
   font-size: 1.7rem;
   margin: 0 0 0.3rem;
-  color: #003366; /* ajuste para a paleta do Portal Único */
+  color: #003366; /* ajuste para paleta do Portal Único */
 }
 
 .pu-header p {
@@ -25,13 +26,30 @@
   font-size: 0.95rem;
 }
 
-/* Ajustes de cores globais do Amplify UI */
+/* Cores básicas do Amplify UI (botões, foco, etc.) */
 :root {
-  --amplify-colors-brand-primary-80: #005ca9; /* azul ES / Portal Único */
+  --amplify-colors-brand-primary-80: #005ca9;
   --amplify-colors-brand-primary-90: #004a86;
   --amplify-colors-brand-primary-100: #003366;
 
-  /* Fundo da tabela */
   --amplify-colors-background-primary: #f8fafc;
 }
+
+/* ========= Customizações específicas do Storage Browser ========= */
+
+/* 1) Esconder coluna "Bucket" (2ª coluna) em todas as tabelas do Storage Browser */
+
+.amplify-storage-browser__data-table thead tr th:nth-child(2),
+.amplify-storage-browser__data-table tbody tr td:nth-child(2),
+.amplify-storage-browser__data-table table thead tr th:nth-child(2),
+.amplify-storage-browser__data-table table tbody tr td:nth-child(2) {
+  display: none !important;
+}
+
+/* 2) Esconder qualquer breadcrumb / nav dentro do wrapper */
+
+.pu-wrapper nav {
+  display: none !important;
+}
+
 
